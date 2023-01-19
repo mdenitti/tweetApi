@@ -72,10 +72,10 @@ Route::post('/users', function (Request $request) {
 Route::get('/chats', function () {
      return DB::table('chats')
          ->join('users', 'chats.user_id', '=', 'users.id')
-         ->select('chats.id', 'chats.message', 'users.name')
+         ->select('chats.id', 'chats.content', 'users.name')
          ->get();
 
-    return DB::select('select chats.id AS chatId, chats.message, users.name, users.id AS userId from chats join users on chats.user_id = users.id');
+    //return DB::select('select chats.id AS chatId, chats.content, users.name, users.id AS userId from chats join users on chats.user_id = users.id');
 });
 
 Route::post('/chats', function (Request $request) {
