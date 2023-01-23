@@ -72,7 +72,8 @@ Route::post('/users', function (Request $request) {
 Route::get('/chats', function () {
      return DB::table('chats')
          ->join('users', 'chats.user_id', '=', 'users.id')
-         ->select('chats.id', 'chats.content', 'users.name')
+         ->select('chats.id', 'chats.content', 'users.name','users.id AS userId')
+         ->orderBy('chats.id', 'desc')
          ->get();
 
     //return DB::select('select chats.id AS chatId, chats.content, users.name, users.id AS userId from chats join users on chats.user_id = users.id');
@@ -93,6 +94,20 @@ Route::post('/chats', function (Request $request) {
     return response()->json([
         'message' => 'Message created'
     ], 201);
+});
+
+Route::delete('/chats/{id}', function ($id) {
+    if (!DB::table('chats')->where('id', $id)->exists()) {
+        return response()->json([
+            'message' => 'Message not found'
+        ], 404);
+    }
+
+    DB::table('chats')->where('id', $id)->delete();
+
+    return response()->json([
+        'message' => 'Message deleted'
+    ], 200);
 });
 
 Route::delete('/chats', function () {
