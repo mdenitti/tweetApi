@@ -26,6 +26,13 @@ use Illuminate\Support\Facades\Route;
 //    - delete: /chats (truncate)
 //    - delete: /chats/{id}
 
+
+////////////////// TEST //////////////////////////////////////////////////////
+
+Route::get('/test', function () {
+    return 'hello world';
+});
+
 ////////////////// USERS //////////////////////////////////////////////////////
 
 Route::get('/users/{name}', function ($name) {
