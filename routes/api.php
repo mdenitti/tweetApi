@@ -92,7 +92,7 @@ Route::get('/chats/{search}', function($search){
 Route::get('/chats', function () {
      return DB::table('chats')
          ->join('users', 'chats.user_id', '=', 'users.id')
-         ->select('chats.id', 'chats.content', 'users.name','users.id AS userId')
+         ->select('chats.id', 'chats.content', 'users.name','users.profile','users.id AS userId')
          ->orderBy('chats.id', 'desc')
          ->get();
 
