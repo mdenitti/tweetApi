@@ -90,11 +90,13 @@ Route::get('/chats/{search}', function($search){
 
 
 Route::get('/chats', function () {
-     return DB::table('chats')
-         ->join('users', 'chats.user_id', '=', 'users.id')
-         ->select('chats.id', 'chats.content', 'users.name','users.profile','users.id AS userId')
-         ->orderBy('chats.id', 'desc')
-         ->get();
+    return DB::table('chats')
+        ->leftJoin('likes', 'chats.id', '=', 'likes.message_id')
+        ->join('users', 'chats.user_id', '=', 'users.id')
+        ->select('chats.id', 'chats.content', 'users.name', 'users.profile', 'users.id AS userId', DB::raw('COUNT(likes.id) as likes_count'))
+        ->groupBy('chats.id', 'chats.content', 'users.name', 'users.profile', 'users.id')
+        ->orderBy('chats.id', 'desc')
+        ->get();
 
     //return DB::select('select chats.id AS chatId, chats.content, users.name, users.id AS userId from chats join users on chats.user_id = users.id');
 });
