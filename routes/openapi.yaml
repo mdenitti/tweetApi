@@ -1,0 +1,145 @@
+openapi: 3.0.0
+info:
+  title: My API
+  version: 1.0.0
+paths:
+  /test:
+    get:
+      description: Returns "hello world"
+      responses:
+        200:
+          description: Successful response
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: hello world
+  /users/{name}:
+    get:
+      description: Returns user information by name
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  password:
+                    type: string
+                  email:
+                    type: string
+                  profile:
+                    type: string
+        404:
+          description: User not found
+  /users:
+    post:
+      description: Creates a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+                profile:
+                  type: string
+      responses:
+        201:
+          description: User created
+        409:
+          description: User already exists
+  /chats/{search}:
+    get:
+      description: Returns a list of chats matching the given search
+      parameters:
+        - name: search
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    content:
+                      type: string
+                    name:
+                      type: string
+                    userId:
+                      type: integer
+  /chats:
+    get:
+      description: Returns a list of all chats
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    content:
+                      type: string
+                    name:
+                      type: string
+                    profile:
+                      type: string
+                    userId:
+                      type: integer
+    post:
+      description: Creates a new chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                user_id:
+                  type: integer
+      responses:
+        201:
+          description: Chat created
+    delete:
+      description: Deletes all chats
+      responses:
+        200:
+          description: All chats deleted
+  /chats/{id}:
+    delete:
+      description: Deletes chat by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:

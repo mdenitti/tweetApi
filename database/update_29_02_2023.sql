@@ -1,0 +1,5 @@
+CREATE TABLE likes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  message_id INT NOT NULL,
+  user_id INT NOT NULL
+);

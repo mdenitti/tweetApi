@@ -99,6 +99,27 @@ Route::get('/chats', function () {
     //return DB::select('select chats.id AS chatId, chats.content, users.name, users.id AS userId from chats join users on chats.user_id = users.id');
 });
 
+// make route to receive multiple values in one object in the body
+Route::
+    post('/chats', function (Request $request) {
+        $content = $request->input('content');
+        $user_id = $request->input('user_id');
+        // get current date
+        $date = date('Y-m-d H:i:s');
+
+        DB::table('chats')->insert([
+            'content' => $content,
+            'user_id' => $user_id,
+            'date' => $date
+        ]);
+
+        return response()->json([
+            'message' => 'Message created'
+        ], 201);
+    });
+
+
+
 Route::post('/chats', function (Request $request) {
     $content = $request->input('content');
     $user_id = $request->input('user_id');
@@ -136,4 +157,19 @@ Route::delete('/chats', function () {
     return response()->json([
         'message' => 'All messages deleted'
     ], 200);
+});
+
+
+////////////////// LIKES //////////////////////////////////////////////////////
+
+Route::post('/like', function (Request $request) {
+    $messageId = $request->input('message_id');
+    $userId = $request->input('user_id');
+    
+    DB::table('likes')->insert([
+        'message_id' => $messageId,
+        'user_id' => $userId
+    ]);
+    
+    return response()->json(['message' => 'Like added successfully!'], 201);
 });
