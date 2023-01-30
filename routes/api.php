@@ -107,16 +107,36 @@ Route::get('/chats/search', function (Request $request) {
 
 
 Route::get('/chats', function () {
-    return DB::table('chats')
+    $chats = DB::table('chats')
         ->leftJoin('likes', 'chats.id', '=', 'likes.message_id')
         ->join('users', 'chats.user_id', '=', 'users.id')
-        ->select('chats.id', 'chats.content', 'chats.date', 'users.name', 'users.profile', 'users.id AS userId', DB::raw('COUNT(likes.id) as likes_count'))
-        ->groupBy('chats.id', 'chats.content', 'users.name', 'users.profile', 'users.id')
+        ->leftJoin('chat_emoticon', 'chats.id', '=', 'chat_emoticon.chat_id')
+        ->leftJoin('emoticons', 'chat_emoticon.emoticon_id', '=', 'emoticons.id')
+        ->select('chats.id', 'chats.content', 'chats.date', 'users.name', 'users.profile', 'users.id AS userId', 'emoticons.value', DB::raw('COUNT(likes.id) as likes_count'))
+        ->groupBy('chats.id', 'chats.content', 'users.name', 'users.profile', 'users.id', 'emoticons.value')
         ->orderBy('chats.id', 'desc')
         ->get();
 
-    //return DB::select('select chats.id AS chatId, chats.content, users.name, users.id AS userId from chats join users on chats.user_id = users.id');
+    $result = [];
+    foreach ($chats as $chat) {
+        if (!array_key_exists($chat->id, $result)) {
+            $result[$chat->id] = [
+                'id' => $chat->id,
+                'content' => $chat->content,
+                'date' => $chat->date,
+                'name' => $chat->name,
+                'profile' => $chat->profile,
+                'userId' => $chat->userId,
+                'value' => [],
+                'likes_count' => $chat->likes_count
+            ];
+        }
+        $result[$chat->id]['value'][] = $chat->value;
+    }
+    return array_values($result);
 });
+
+
 
 // make route to receive multiple values in one object in the body
 Route::
