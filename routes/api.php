@@ -88,6 +88,23 @@ Route::get('/chats/{search}', function($search){
         ->get();
 });
 
+// Get multiple search results with multiple search words when receving multiple values in one object in the body
+
+Route::get('/chats/search', function (Request $request) {
+    $search = $request->input('search');
+    $searchArray = explode(' ', $search);
+
+    $query = DB::table('chats')
+        ->join('users', 'chats.user_id', '=', 'users.id')
+        ->select('chats.id', 'chats.content', 'users.name','users.id AS userId');
+
+    foreach ($searchArray as $searchWord) {
+        $query->where('chats.content', 'like', '%'.$searchWord.'%');
+    }
+
+    return $query->orderBy('chats.id', 'desc')->get();
+});
+
 
 Route::get('/chats', function () {
     return DB::table('chats')
@@ -174,4 +191,10 @@ Route::post('/like', function (Request $request) {
     ]);
     
     return response()->json(['message' => 'Like added successfully!'], 201);
+});
+
+////////////////// EMOTICONS //////////////////////////////////////////////////////
+
+Route::get('/emoticons', function () {
+    return DB::table('emoticons')->get();
 });
