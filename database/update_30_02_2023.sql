@@ -9,3 +9,7 @@ INSERT INTO `ID324796_chat`.`emoticons` (`value`) VALUES ('&#128513');
 INSERT INTO `ID324796_chat`.`emoticons` (`value`) VALUES ('&#128514');
 INSERT INTO `ID324796_chat`.`emoticons` (`value`) VALUES ('&#128517');
 INSERT INTO `ID324796_chat`.`emoticons` (`value`) VALUES ('&#128561');
+
+-- 30 January 2023 8:43:41 PM
+ALTER TABLE `ID324796_chat`.`chat_emoticon`
+ADD COLUMN `user_id` int(11) NULL;

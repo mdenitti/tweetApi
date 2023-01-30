@@ -198,3 +198,10 @@ Route::post('/like', function (Request $request) {
 Route::get('/emoticons', function () {
     return DB::table('emoticons')->get();
 });
+
+
+Route::post('/emoticons', function (Request $request) {
+    $data = $request->only(['chat_id', 'user_id', 'emoticon_id']);
+    DB::table('chat_emoticon')->insert($data);
+    return response()->json(['message' => 'emoticon added successfully!'], 201);
+});
