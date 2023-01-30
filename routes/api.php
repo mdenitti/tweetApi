@@ -136,6 +136,21 @@ Route::get('/chats', function () {
     return array_values($result);
 });
 
+// Example output:
+
+// {
+//     "id": 59,
+//     "content": "Common sense is like a deodorant. The people who need it most never use it",
+//     "date": "2023-01-30 12:12:51",
+//     "name": "Niel",
+//     "profile": null,
+//     "userId": 38,
+//     "value": [
+//         "&#128513",
+//         "&#128517"
+//     ],
+//     "likes_count": 12
+// }
 
 
 // make route to receive multiple values in one object in the body
